@@ -24,6 +24,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Installer ImageMagick
+        run: sudo apt-get install -y imagemagick
+
       - name: Installer npm pakker
         run: npm install
 
@@ -32,6 +35,22 @@ jobs:
 
       - name: Sync filer til Android
         run: npx cap sync android
+
+      - name: Sæt app-ikon
+        run: |
+          for size in 36 48 72 96 144 192; do
+            case $size in
+              36)  folder="mipmap-ldpi"  ;;
+              48)  folder="mipmap-mdpi"  ;;
+              72)  folder="mipmap-hdpi"  ;;
+              96)  folder="mipmap-xhdpi" ;;
+              144) folder="mipmap-xxhdpi";;
+              192) folder="mipmap-xxxhdpi";;
+            esac
+            mkdir -p android/app/src/main/res/$folder
+            convert www/logo-icon.png -resize ${size}x${size} android/app/src/main/res/$folder/ic_launcher.png
+            convert www/logo-icon.png -resize ${size}x${size} android/app/src/main/res/$folder/ic_launcher_round.png
+          done
 
       - name: Gør gradlew eksekverbar
         run: chmod +x android/gradlew
