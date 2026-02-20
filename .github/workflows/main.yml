@@ -38,6 +38,11 @@ jobs:
 
       - name: Sæt app-ikon
         run: |
+          find android/app/src/main/res -name "ic_launcher.png" -delete
+          find android/app/src/main/res -name "ic_launcher_round.png" -delete
+          find android/app/src/main/res -name "ic_launcher_foreground.png" -delete
+          rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+          rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
           for size in 36 48 72 96 144 192; do
             case $size in
               36)  folder="mipmap-ldpi"  ;;
